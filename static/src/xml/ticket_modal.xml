@@ -1,0 +1,169 @@
+<t t-name="odoo_rifa.TicketModal">
+
+    <Dialog title="'Boleta #' + props.ticket.numero">
+
+        <div class="modal-body">
+
+            <!-- PAGADA -->
+            <t t-if="state.state === 'paid'">
+
+                <div class="alert alert-success">
+                    Esta boleta ya fue pagada
+                </div>
+
+                <p>
+                    <strong>Cliente:</strong>
+                    <t t-esc="state.partner_name"/>
+                </p>
+
+                <p>
+                    <strong>Método:</strong>
+                    <t t-esc="state.payment_method"/>
+                </p>
+
+                <t t-if="state.comprobante">
+
+                    <div class="mt-2">
+
+                        <a t-att-href="'/web/content/rifa.ticket/' + props.ticket.id + '/comprobante'" target="_blank" class="btn btn-outline-primary">
+
+                            Ver Comprobante
+
+                        </a>
+
+                    </div>
+
+                </t>
+
+            </t>
+
+            <!-- PENDIENTE -->
+            <t t-elif="state.state === 'pending'">
+
+                <div class="alert alert-warning">
+                    Pago pendiente de validación
+                </div>
+
+                <p>
+                    <strong>Cliente:</strong>
+                    <t t-esc="state.partner_name"/>
+                </p>
+
+                <p>
+                    <strong>Método:</strong>
+                    <t t-esc="state.payment_method"/>
+                </p>
+
+                <t t-if="state.comprobante">
+
+                    <div class="mt-2">
+
+                        <a t-att-href="'/web/content/rifa.ticket/' + props.ticket.id + '/comprobante'" target="_blank" class="btn btn-outline-primary">
+
+                            Ver Comprobante
+
+                        </a>
+
+                    </div>
+
+                </t>
+
+                <t t-if="props.isBienestar">
+
+                    <div class="d-flex gap-3 mt-3 justify-content-center">
+
+                        <button class="btn btn-success px-4" t-on-click="validate">
+
+                            Validar Pago
+
+                        </button>
+
+                        <button class="btn btn-danger px-4" t-on-click="reject">
+
+                            Rechazar Pago
+
+                        </button>
+
+                    </div>
+
+                </t>
+
+            </t>
+
+            <!-- DISPONIBLE -->
+            <t t-else="">
+
+                <!-- CLIENTE -->
+                <div class="mb-3">
+
+                    <label>Cliente</label>
+
+                    <input type="text" class="form-control" placeholder="Buscar cliente..." t-model="state.partner_name" t-on-input="onSearchPartner"/>
+
+                    <button class="btn btn-primary mt-2" t-on-click="createPartner">
+
+                        Crear Cliente
+
+                    </button>
+
+                    <ul t-if="state.partner_results.length" class="list-group mt-2">
+
+                        <t t-foreach="state.partner_results" t-as="p" t-key="p.id">
+
+                            <li class="list-group-item" style="cursor:pointer;" t-on-click="() => this.selectPartner(p)">
+
+                                <t t-esc="p.name"/>
+
+                            </li>
+
+                        </t>
+
+                    </ul>
+
+                </div>
+
+                <!-- PAGO -->
+                <div class="mb-3">
+
+                    <label>Método de pago</label>
+
+                    <select class="form-select" t-model="state.payment_method">
+
+                        <option value="cash">Efectivo</option>
+                        <option value="transfer">Transferencia</option>
+                        <option value="other">Otro</option>
+
+                    </select>
+
+                </div>
+
+                <!-- COMPROBANTE -->
+                <t t-if="state.payment_method !== 'cash'">
+
+                    <div class="mb-3">
+
+                        <label>Comprobante</label>
+
+                        <input type="file" class="form-control" t-on-change="onFileChange"/>
+
+                    </div>
+
+                </t>
+
+                <div class="d-flex justify-content-center mt-4">
+
+                    <button class="btn btn-primary px-5 py-2" t-on-click="save">
+
+                        Guardar Boleta
+
+                    </button>
+
+                </div>
+
+            </t>
+
+        </div>
+
+    </Dialog>
+
+</t>

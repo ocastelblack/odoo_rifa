@@ -1,0 +1,254 @@
+<t t-name="odoo_rifa.TicketBoard">
+
+    <div style="padding:20px;">
+
+        <!-- HEADER -->
+        <div class="d-flex gap-2 align-items-center mb-3">
+
+            <h2 class="m-0">
+                Boletas
+            </h2>
+
+            <button t-on-click="goBack" class="btn btn-secondary">
+
+                Volver a Rifas
+
+            </button>
+
+            <button t-on-click="generateImage" class="btn btn-primary">
+
+                Generar Imagen
+
+            </button>
+
+            <t t-if="state.rifa?.can_play">
+
+                <button t-on-click="playRaffle" class="btn btn-success">
+
+                    Jugar Rifa
+
+                </button>
+
+            </t>
+
+        </div>
+
+        <!-- SIN BOLETAS -->
+        <t t-if="state.tickets.length === 0">
+
+            <div class="alert alert-warning">
+                No hay boletas generadas
+            </div>
+
+        </t>
+
+        <!-- CON BOLETAS -->
+        <t t-else="">
+
+            <!-- INFO -->
+            <div class="mb-3">
+
+                Mostrando
+
+                <t t-esc="(state.page - 1) * state.limit + 1"/>
+
+                -
+
+                <t t-esc="Math.min(state.page * state.limit, state.total)"/>
+
+                de
+
+                <t t-esc="state.total"/>
+
+            </div>
+
+            <!-- SELECT -->
+            <div class="mb-3">
+
+                <label class="me-2">
+                    Boletas por página:
+                </label>
+
+                <select t-on-change="(ev) => this.changeLimit(ev)">
+
+                    <t t-foreach="state.pageOptions" t-as="opt" t-key="opt">
+
+                        <option t-att-value="opt">
+
+                            <t t-esc="opt"/>
+
+                        </option>
+
+                    </t>
+
+                </select>
+
+            </div>
+
+            <!-- SCROLL NORMAL -->
+            <div style="
+                max-height:600px;
+                overflow:auto;
+                border:1px solid #ddd;
+                border-radius:12px;
+                padding:20px;
+                background:#f8f9fa;
+            ">
+
+                <!-- EXPORTABLE -->
+                <div id="rifa-export" style="
+                        background:white;
+                        padding:30px;
+                        border-radius:12px;
+                        width:1080px;
+                        margin:auto;
+                     ">
+
+                    <!-- HEADER -->
+                    <div style="
+                        display:flex;
+                        justify-content:space-between;
+                        align-items:center;
+                        margin-bottom:30px;
+                        border-bottom:2px solid #ddd;
+                        padding-bottom:20px;
+                    ">
+
+                        <!-- INFO -->
+                        <div>
+
+                            <h1 style="
+                                margin:0;
+                                font-size:42px;
+                                color:#222;
+                            ">
+
+                                <t t-esc="state.rifa?.name"/>
+
+                            </h1>
+
+                            <div style="
+                                margin-top:10px;
+                                font-size:24px;
+                            ">
+
+                                Premio:
+                                <strong>
+                                    <t t-esc="state.rifa?.premio_nombre"/>
+                                </strong>
+
+                            </div>
+
+                            <div style="
+                                margin-top:10px;
+                                font-size:20px;
+                                color:#666;
+                            ">
+
+                                Fecha:
+                                <strong>
+                                    <t t-esc="state.rifa?.fecha_rifa"/>
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <!-- LOGO -->
+                        <div>
+
+                            <img src="/web/image/res.company/1/logo" style="
+                                    width:180px;
+                                    object-fit:contain;
+                                 "/>
+
+                        </div>
+
+                    </div>
+
+                    <!-- GRID -->
+                    <div style="
+                        display:grid;
+                        grid-template-columns: repeat(10, 1fr);
+                        gap:12px;
+                    ">
+
+                        <t t-foreach="state.tickets" t-as="ticket" t-key="ticket.id">
+
+                            <div t-on-click="() => this.openTicket(ticket)" t-att-style="
+                                    'width:80px;
+                                     height:80px;
+                                     border-radius:50%;
+                                     display:flex;
+                                     align-items:center;
+                                     justify-content:center;
+                                     cursor:pointer;
+                                     border:2px solid #ccc;
+                                     font-size:18px;
+                                     font-weight:bold;
+                                     background:' + this.getColor(ticket)
+                                ">
+
+                                <t t-esc="ticket.numero"/>
+
+                            </div>
+
+                        </t>
+
+                    </div>
+
+                    <!-- LEYENDA -->
+                    <div style="
+                        margin-top:30px;
+                        display:flex;
+                        justify-content:center;
+                        gap:30px;
+                        flex-wrap:wrap;
+                        font-size:20px;
+                    ">
+
+                        <div>⚪ Disponible</div>
+                        <div>🟡 Pendiente</div>
+                        <div>🔴 Reservada</div>
+                        <div>🟢 Pagada</div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </t>
+
+        <!-- PAGINADOR -->
+        <div style="
+            margin-top:20px;
+            display:flex;
+            gap:10px;
+            align-items:center;
+        ">
+
+            <button t-on-click="prevPage" class="btn btn-outline-secondary">
+
+                Anterior
+
+            </button>
+
+            <span>
+
+                Página
+                <t t-esc="state.page"/>
+
+            </span>
+
+            <button t-on-click="nextPage" class="btn btn-outline-secondary">
+
+                Siguiente
+
+            </button>
+
+        </div>
+
+    </div>
+
+</t>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rifa_bienestar,rifa bienestar,model_rifa_rifa,odoo_rifa.group_rifa_bienestar,1,1,1,1
+access_rifa_user_read,rifa user read,model_rifa_rifa,base.group_user,1,0,0,0
+access_ticket_bienestar,rifa ticket bienestar,model_rifa_ticket,odoo_rifa.group_rifa_bienestar,1,1,1,1
+access_ticket_user_read,rifa ticket user read,model_rifa_ticket,base.group_user,1,0,0,0

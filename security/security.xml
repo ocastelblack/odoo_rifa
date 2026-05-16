@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+
+        <!-- Categoría -->
+        <record id="module_category_rifa" model="ir.module.category">
+            <field name="name">Rifas</field>
+            <field name="sequence">10</field>
+        </record>
+
+        <!-- Grupo -->
+        <record id="group_rifa_bienestar" model="res.groups">
+            <field name="name">Rifa Bienestar</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,82 @@
+<odoo>
+
+    <!-- Acción -->
+    <record id="action_rifas" model="ir.actions.act_window">
+        <field name="name">Rifas</field>
+        <field name="res_model">rifa.rifa</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    #tickets
+    <record id="action_rifa_board" model="ir.actions.client">
+        <field name="name">Boletas</field>
+        <field name="tag">rifa_ticket_board</field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_rifa_root" name="Rifas" web_icon="odoo_rifa,static/description/icon.png"/>
+
+    <menuitem id="menu_rifas" name="Gestión de Rifas" parent="menu_rifa_root" action="action_rifas" />
+
+    <!-- Vista Tree  bienestar-->
+    <record id="view_rifa_tree" model="ir.ui.view">
+        <field name="name">rifa.list</field>
+        <field name="model">rifa.rifa</field>
+        <field name="arch" type="xml">
+            <list create="true" edit="true" delete="true">
+                <field name="name"/>
+                <field name="premio_nombre"/>
+                <field name="cantidad_boletas"/>
+                <field name="fecha_rifa"/>
+                <field name="state"/>
+                <field name="is_locked" invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+
+    <!-- Vista Form -->
+    <record id="view_rifa_form" model="ir.ui.view">
+        <field name="name">rifa.form</field>
+        <field name="model">rifa.rifa</field>
+        <field name="arch" type="xml">
+            <form string="Rifa">
+
+                <header>
+                    <button name="action_generar_boletas" string="Generar Boletas" type="object" class="btn-secondary" groups="odoo_rifa.group_rifa_bienestar" invisible="has_tickets"/>
+
+                    <button name="action_open_board" string="Ver Boletas" type="object" class="btn-primary" groups="odoo_rifa.group_rifa_bienestar"/>
+
+                    <button name="action_delete_rifa" string="Eliminar Rifa" type="object" class="btn-danger" groups="odoo_rifa.group_rifa_bienestar" confirm="¿Seguro que quieres eliminar la rifa?"/>
+                </header>
+
+                <sheet>
+                    <group>
+
+                        <field name="is_locked" invisible="1"/>
+
+                        <field name="name" readonly="is_locked"/>
+
+                        <field name="premio_nombre" readonly="is_locked"/>
+
+                        <field name="premio_imagen" widget="image" readonly="is_locked"/>
+
+                        <!-- SOLO editable mientras no llegue fecha -->
+                        <field name="cantidad_boletas" readonly="fecha_rifa &lt; context_today()"/>
+
+                        <field name="precio_boleta" readonly="is_locked"/>
+
+                        <field name="fecha_rifa" readonly="is_locked"/>
+
+                        <field name="porcentaje_disponible" readonly="1"/>
+
+                        <field name="state" readonly="1"/>
+
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

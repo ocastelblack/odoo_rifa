@@ -1,0 +1,84 @@
+<t t-name="odoo_rifa.WinnerModal">
+
+    <Dialog title="'Resultado de la Rifa'">
+
+        <div class="p-5 text-center">
+
+            <div style="
+                font-size:80px;
+                animation: pulse 1s infinite;
+            ">
+                🎰
+            </div>
+
+            <t t-if="props.result.winner">
+
+                <div class="alert alert-success mt-4">
+
+                    <h1 style="font-size:50px;">
+                        GANADOR
+                    </h1>
+
+                </div>
+
+                <div style="
+                    font-size:40px;
+                    font-weight:bold;
+                    margin-top:20px;
+                ">
+
+                    BOLETA #
+                    <t t-esc="props.result.winner.numero"/>
+
+                </div>
+
+                <div style="
+                    font-size:28px;
+                    margin-top:15px;
+                ">
+
+                    <t t-esc="props.result.winner.partner"/>
+
+                </div>
+
+            </t>
+
+            <t t-else="">
+
+                <div class="alert alert-danger mt-4">
+
+                    <h1 style="font-size:50px;">
+                        SIN GANADOR
+                    </h1>
+
+                </div>
+
+                <div style="
+                    font-size:28px;
+                    margin-top:20px;
+                ">
+
+                    La boleta #
+
+                    <strong>
+                        <t t-esc="props.result.ticket"/>
+                    </strong>
+
+                    no fue comprada
+
+                </div>
+
+            </t>
+
+            <button class="btn btn-primary btn-lg mt-5"
+                    t-on-click="props.close">
+
+                Cerrar
+
+            </button>
+
+        </div>
+
+    </Dialog>
+
+</t>
