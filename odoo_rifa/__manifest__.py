@@ -39,6 +39,7 @@
             "odoo_rifa/static/src/xml/winner_modal.xml",
         ],
     },
+    "images": ["static/description/banner.png"],
     "installable": True,
     "application": True,
     "license": "LGPL-3",
